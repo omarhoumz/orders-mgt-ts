@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import * as React from 'react'
 
-function About() {
+function NewOrder() {
   return (
     <div>
       <Head>
@@ -18,4 +18,4 @@ function About() {
   )
 }
 
-export default About
+export default NewOrder
