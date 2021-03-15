@@ -2,6 +2,7 @@ import Head from 'next/head'
 import Link from 'next/link'
 
 import Restaurant from 'src/components/restaurant'
+import { useAuth } from 'src/lib/auth'
 
 const restos = [
   {
@@ -30,16 +31,28 @@ const restos = [
   },
 ]
 
-export default function Home() {
+function BaseHome({ children, pageTitle }) {
   return (
     <div className='max-w-sm mx-auto px-4 py-8'>
       <Head>
-        <title>Home</title>
+        <title>{pageTitle}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <header>
+      {children}
+    </div>
+  )
+}
+
+function LoggedinHome() {
+  const auth = useAuth()
+  return (
+    <BaseHome pageTitle='home'>
+      <header className='flex justify-between items-baseline'>
         <h2 className='text-xl font-light'>Home</h2>
+        <button onClick={() => auth.signout()}>
+          Sign Out ({auth.user.name})
+        </button>
       </header>
       <main>
         <section className='flex justify-center py-12'>
@@ -58,6 +71,22 @@ export default function Home() {
           </div>
         </section>
       </main>
-    </div>
+    </BaseHome>
   )
+}
+
+export default function Home() {
+  const auth = useAuth()
+
+  if (!auth.user) {
+    return (
+      <BaseHome pageTitle='Sign in'>
+        <button onClick={() => auth.signinWithGoogle('/')}>
+          Sign In With Google
+        </button>
+      </BaseHome>
+    )
+  }
+
+  return <LoggedinHome />
 }
