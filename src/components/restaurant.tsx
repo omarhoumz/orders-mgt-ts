@@ -1,5 +1,6 @@
 import Image from 'next/image'
 import * as React from 'react'
+import Rating from './rating'
 
 type ImageType = {
   src: string
@@ -33,10 +34,7 @@ export default function Restaurant({
       <div className='flex flex-col'>
         <h4 className='text-gray-800 font-bold mb-1'>{title}</h4>
         <p className='text-gray-600 leading-tight'>{description}</p>
-        <div className='mt-auto'>
-          {new Array(stars).fill('★', 0, stars).join('')}
-          {new Array(5 - stars).fill('☆', 0, 5 - stars).join('')}
-        </div>
+        <Rating className='mt-auto' stars={stars} />
       </div>
     </article>
   )
