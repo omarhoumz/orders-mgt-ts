@@ -2,8 +2,9 @@ import * as React from 'react'
 import Router from 'next/router'
 
 import firebase from './firebase'
+import { createUser } from './db'
 
-type User = {
+export type User = {
   uid: string
   email: string | null
   name: string | null
@@ -41,9 +42,16 @@ function useProvideAuth() {
   const [user, setUser] = React.useState<User>(null)
   const [loading, setLoading] = React.useState(true)
 
-  async function handleUser(rawUser) {
+  async function handleUser(
+    rawUser,
+    aditionalUserInfo?: firebase.auth.AdditionalUserInfo,
+  ) {
     if (rawUser) {
       const user = await formatUser(rawUser)
+      const { token, ...userWithoutToken } = user
+      if (aditionalUserInfo?.isNewUser) {
+        createUser(userWithoutToken)
+      }
       setUser(user)
     } else {
       setUser(null)
@@ -57,7 +65,7 @@ function useProvideAuth() {
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then((response) => {
-        handleUser(response.user)
+        handleUser(response.user, response.additionalUserInfo)
       })
   }
 
@@ -67,7 +75,7 @@ function useProvideAuth() {
       .auth()
       .signInWithPopup(new firebase.auth.GoogleAuthProvider())
       .then((response) => {
-        handleUser(response.user)
+        handleUser(response.user, response.additionalUserInfo)
 
         if (redirect) {
           Router.push(redirect)
