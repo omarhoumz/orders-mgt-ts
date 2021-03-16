@@ -45,14 +45,13 @@ function BaseHome({ children, pageTitle }) {
 }
 
 function LoggedinHome() {
-  const auth = useAuth()
+  const { user, signout } = useAuth()
+
   return (
-    <BaseHome pageTitle='home'>
+    <BaseHome pageTitle='Home'>
       <header className='flex justify-between items-baseline'>
         <h2 className='text-xl font-light'>Home</h2>
-        <button onClick={() => auth.signout()}>
-          Sign Out ({auth.user.name})
-        </button>
+        <button onClick={() => signout()}>Sign Out ({user.name})</button>
       </header>
       <main>
         <section className='flex justify-center py-12'>
@@ -76,12 +75,20 @@ function LoggedinHome() {
 }
 
 export default function Home() {
-  const auth = useAuth()
+  const { loading, user, signinWithGoogle } = useAuth()
 
-  if (!auth.user) {
+  if (loading) {
+    return (
+      <BaseHome pageTitle='Loading ...'>
+        <span>Loading ...</span>
+      </BaseHome>
+    )
+  }
+
+  if (!user) {
     return (
       <BaseHome pageTitle='Sign in'>
-        <button onClick={() => auth.signinWithGoogle('/')}>
+        <button onClick={() => signinWithGoogle('/')}>
           Sign In With Google
         </button>
       </BaseHome>
