@@ -101,7 +101,7 @@ export default function Restaurant() {
                 alt='An image of a restaurant'
                 layout='fill'
                 objectFit='cover'
-                className=' rounded-xl'
+                className='rounded'
               />
             </figure>
             <div className='meta'>
@@ -126,7 +126,7 @@ export default function Restaurant() {
             <h3 className='font-bold mt-4'>Meal Images</h3>
           </div>
         </div>
-        <div className='sticky bottom-0 w-full bg-white py-2 text-center mt-auto'>
+        <div className='sticky bottom-0 w-full bg-gray-50 py-2 text-center mt-auto'>
           <div className='flex gap-4 mb-4 text-gray-700 font-light '>
             <div className='ml-7'></div>
             <div className='flex-grow flex justify-between gap-2 text-lg'>
@@ -134,7 +134,7 @@ export default function Restaurant() {
               <div>{getTotal(menuItems)}</div>
             </div>
           </div>
-          <button className='bg-gray-100 py-2 px-8 capitalize rounded'>
+          <button className='bg-gray-100 py-2 px-8 capitalize rounded hover:bg-gray-200'>
             confirm order
           </button>
         </div>
