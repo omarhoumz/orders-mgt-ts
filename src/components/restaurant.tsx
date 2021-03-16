@@ -21,15 +21,15 @@ export default function Restaurant({
   stars,
 }: IProps) {
   return (
-    <article className='flex gap-2 border border-gray-300 p-2 rounded'>
+    <article className='flex gap-2 bg-white border border-gray-200 p-2 rounded'>
       <figure className='relative w-28 h-24 m-0'>
         <Image
           src={image.src}
           alt={image.alt}
           layout='fill'
           objectFit='cover'
+          className='rounded-sm'
         />
-        {/* <figcaption>An elephant at sunset</figcaption> */}
       </figure>
       <div className='flex flex-col'>
         <h4 className='text-gray-800 font-bold mb-1'>{title}</h4>
