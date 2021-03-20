@@ -44,7 +44,15 @@ export function AuthProvider({ children }) {
 }
 
 export const useAuth = () => {
-  return React.useContext(AuthContext)
+  const context = React.useContext(AuthContext)
+
+  if (!context) {
+    throw new Error(
+      'Before using the `useAuth` hook, wrap your component in `AuthProvider`',
+    )
+  }
+
+  return context
 }
 
 function useProvideAuth() {
