@@ -2,7 +2,15 @@ import * as React from 'react'
 import Router from 'next/router'
 
 import firebase from './firebase'
-import { createUser } from './db'
+import { createUser, getUserRole } from './db'
+
+// TODO: maybe move to types
+export enum UserRole {
+  user,
+  waiter,
+  manager,
+  owner,
+}
 
 export type User = {
   uid: string
@@ -11,6 +19,7 @@ export type User = {
   provider: string
   photoUrl: string | null
   token: string
+  role: UserRole
 } | null
 
 type AuthContextType = {
@@ -47,11 +56,14 @@ function useProvideAuth() {
     aditionalUserInfo?: firebase.auth.AdditionalUserInfo,
   ) {
     if (rawUser) {
-      const user = await formatUser(rawUser)
+      const isNewUser = Boolean(aditionalUserInfo?.isNewUser)
+      const user = await formatUser(rawUser, isNewUser)
       const { token, ...userWithoutToken } = user
-      if (aditionalUserInfo?.isNewUser) {
+
+      if (isNewUser) {
         createUser(userWithoutToken)
       }
+
       setUser(user)
     } else {
       setUser(null)
@@ -84,14 +96,16 @@ function useProvideAuth() {
   }
 
   const signout = (redirect?: string) => {
-    if (redirect) {
-      Router.push(redirect)
-    }
-
     return firebase
       .auth()
       .signOut()
-      .then(() => handleUser(null))
+      .then(() => {
+        handleUser(null)
+
+        if (redirect) {
+          Router.push(redirect)
+        }
+      })
   }
 
   React.useEffect(() => {
@@ -109,8 +123,12 @@ function useProvideAuth() {
   }
 }
 
-const formatUser = async (user: firebase.User): Promise<User> => {
+const formatUser = async (
+  user: firebase.User,
+  isNewUser: boolean,
+): Promise<User> => {
   const token = await user.getIdToken()
+  const role = isNewUser ? UserRole.user : await getUserRole(user)
 
   return {
     uid: user.uid,
@@ -118,6 +136,7 @@ const formatUser = async (user: firebase.User): Promise<User> => {
     name: user.displayName,
     provider: user.providerData[0].providerId,
     photoUrl: user.photoURL,
+    role,
     token,
   }
 }
