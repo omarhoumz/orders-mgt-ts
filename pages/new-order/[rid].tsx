@@ -6,6 +6,35 @@ import * as React from 'react'
 import MenuItem, { menuItemType } from 'src/components/menu-item'
 import Rating from 'src/components/rating'
 
+const defaultItems = [
+  {
+    id: 1,
+    title: 'Margarita',
+    incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper, Oregano',
+    price: 12,
+  },
+  {
+    id: 2,
+    title: 'ITALIAN SAUSAGE',
+    incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper',
+    price: 16,
+    isChecked: true,
+  },
+  {
+    id: 3,
+    title: 'Margarita',
+    incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper, Oregano',
+    price: 14,
+    isChecked: true,
+  },
+  {
+    id: 4,
+    title: 'ITALIAN SAUSAGE',
+    incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper',
+    price: 18,
+  },
+]
+
 function getCount(items: menuItemType[]) {
   return items.reduce((acc, cur) => {
     return cur?.isChecked ? acc + 1 : acc
@@ -23,35 +52,8 @@ function getTotal(items: menuItemType[]) {
     })
 }
 
-export default function Restaurant() {
-  const [menuItems, setMenuItems] = React.useState<menuItemType[]>([
-    {
-      id: 1,
-      title: 'Margarita',
-      incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper, Oregano',
-      price: 12,
-    },
-    {
-      id: 2,
-      title: 'ITALIAN SAUSAGE',
-      incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper',
-      price: 16,
-      isChecked: true,
-    },
-    {
-      id: 3,
-      title: 'Margarita',
-      incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper, Oregano',
-      price: 14,
-      isChecked: true,
-    },
-    {
-      id: 4,
-      title: 'ITALIAN SAUSAGE',
-      incredients: 'Red Sauce, Ricota, Red Pepper, Sport Pepper',
-      price: 18,
-    },
-  ])
+export default function NewOrderRestaurant() {
+  const [menuItems, setMenuItems] = React.useState<menuItemType[]>(defaultItems)
 
   function handleClickItem(id) {
     setMenuItems((items) =>

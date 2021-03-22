@@ -19,7 +19,7 @@ export default function NewOrder() {
 
         <section className='max-h-s-12/3 h-cam my-12 rounded-3xl bg-blue-50 border-2 border-blue-300'>
           <div className='flex justify-center items-center h-full w-full'>
-            <Link href='/restaurant'>
+            <Link href='/new-order/xnzqLBJCHX1Nj76IDMX8'>
               <a className='inline-block px-4 py-2 text-lg bg-gray-200 rounded transition-colors duration-100 hover:bg-gray-300'>
                 next
               </a>
