@@ -65,11 +65,13 @@ export default function AdminHome() {
             query: { rid: firstRestaurant },
           }}
         >
-          <a>Add a menu item</a>
+          <a className='bg-blue-600 self-start px-3 py-2 rounded text-blue-50 hover:bg-blue-500'>
+            Add a menu item
+          </a>
         </Link>
 
         <div className='flex flex-col'>
-          {data.restaurants[0].menu.map((item) => {
+          {data.restaurants[0].menu.map((item, index) => {
             const price = parseFloat(item.price.toString()).toLocaleString(
               undefined,
               {
@@ -77,11 +79,22 @@ export default function AdminHome() {
                 maximumFractionDigits: 2,
               },
             )
+
             return (
-              <div className='flex justify-between items-baseline py-2 border-b'>
-                <div className='text-xl capitalize'>{item.name}</div>
+              <div
+                className='flex justify-between items-baseline py-2 text-gray-900 border-b'
+                key={index}
+              >
+                <div>
+                  <h3 className='text-xl capitalize'>{item.name}</h3>
+                  {!item.description ? null : (
+                    <p className='capitalize text-gray-700'>
+                      {item.description}
+                    </p>
+                  )}
+                </div>
                 <div style={{ fontVariantNumeric: 'tabular-nums' }}>
-                  {price}
+                  {price} <span className='text-xs'>MAD</span>
                 </div>
               </div>
             )

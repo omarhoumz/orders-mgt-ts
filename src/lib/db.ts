@@ -21,9 +21,9 @@ export async function getUserRole(user: firebase.User): Promise<UserRole> {
   return dbUser.get('role')
 }
 
-export function addMenuItem({ rid, name, price }: { rid: string } & MenuItem) {
+export function addMenuItem({ rid, name, price, description }: { rid: string } & MenuItem) {
   return firestore
     .collection('restaurants')
     .doc(rid)
-    .update({ menu: firebase.firestore.FieldValue.arrayUnion({ name, price }) })
+    .update({ menu: firebase.firestore.FieldValue.arrayUnion({ name, description, price }) })
 }
