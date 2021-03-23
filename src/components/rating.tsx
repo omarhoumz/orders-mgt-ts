@@ -6,10 +6,16 @@ type TProps = {
 }
 
 function Rating({ className, stars }: TProps) {
+  if (!stars) {
+    return null
+  }
+
+  const roundedStars = Math.floor(stars)
+
   return (
     <div className={className}>
-      {new Array(stars).fill('★', 0, stars).join('')}
-      {new Array(5 - stars).fill('☆', 0, 5 - stars).join('')}
+      {new Array(roundedStars).fill('★', 0, roundedStars).join('')}
+      {new Array(5 - roundedStars).fill('☆', 0, 5 - roundedStars).join('')}
     </div>
   )
 }

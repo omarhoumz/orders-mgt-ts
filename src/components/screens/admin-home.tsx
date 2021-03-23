@@ -1,22 +1,12 @@
-import { useAuth } from '@/lib/auth'
 import Link from 'next/link'
-import { RestaurantType } from 'src/types'
 import useSWR from 'swr'
+
+import { useAuth } from '@/lib/auth'
+import { fetcher } from '@/lib/fetcher'
+import { RestaurantType } from 'src/types'
 
 import BaseHome from '../base-home'
 import LoadingSpinner from '../loading-spinner'
-
-// TODO: type this fetcher
-// TODO: move to utils
-const fetcher = async (url, token) => {
-  const res = await fetch(url, {
-    method: 'GET',
-    headers: new Headers({ 'Content-Type': 'application/json', token }),
-    credentials: 'same-origin',
-  })
-
-  return res.json()
-}
 
 type ResponseType = {
   restaurants: RestaurantType[]
@@ -25,7 +15,7 @@ type ResponseType = {
 export default function AdminHome() {
   const { user, signout } = useAuth()
   const { data, error } = useSWR<ResponseType>(
-    ['/api/restaurants', user.token],
+    ['/api/manager-restaurants', user.token],
     fetcher,
   )
 
