@@ -23,12 +23,12 @@ export default function BaseHome({
 
       <nav className='mb-4 text-sm text-gray-700'>
         {links.map(({ label, href }, index) => (
-          <>
+          <React.Fragment key={index}>
             {index === 0 ? null : ' · '}
-            <Link href={href} key={index}>
+            <Link href={href}>
               <a className='capitalize'>{label}</a>
             </Link>
-          </>
+          </React.Fragment>
         ))}
       </nav>
 
