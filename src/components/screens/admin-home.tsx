@@ -3,13 +3,17 @@ import useSWR from 'swr'
 
 import { useAuth } from '@/lib/auth'
 import { fetcher } from '@/lib/fetcher'
-import { RestaurantType } from 'src/types'
+import { MenuItem, RestaurantType } from 'src/types'
 
 import BaseHome from '../base-home'
 import LoadingSpinner from '../loading-spinner'
 
 type ResponseType = {
   restaurants: RestaurantType[]
+}
+
+export type MenuItemsReturnType = {
+  menuItems: MenuItem[]
 }
 
 export default function AdminHome() {
@@ -49,6 +53,9 @@ export default function AdminHome() {
       </header>
 
       <main className='flex flex-col gap-4 mt-6'>
+        {data.restaurants.map((item) => (
+          <a href={`/home/restaurant/${item.id}`}>{item.name}</a>
+        ))}
         <Link
           href={{
             pathname: '/add/menu-item',
