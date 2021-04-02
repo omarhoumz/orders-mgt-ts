@@ -1,10 +1,11 @@
+import { useRouter } from 'next/router'
+import useSWR from 'swr'
+
 import BaseHome from '@/components/base-home'
 import LoadingSpinner from '@/components/loading-spinner'
 import { MenuItemsReturnType } from '@/components/screens/admin-home'
 import { useAuth } from '@/lib/auth'
 import { fetcher } from '@/lib/fetcher'
-import { useRouter } from 'next/router'
-import useSWR from 'swr'
 
 export default function ManageRestaurant() {
   const router = useRouter()
@@ -22,8 +23,6 @@ export default function ManageRestaurant() {
   if (error) {
     return <div>There was an error while fetching restaurant data</div>
   }
-
-  console.log(data)
 
   return (
     <BaseHome pageTitle='Home'>
