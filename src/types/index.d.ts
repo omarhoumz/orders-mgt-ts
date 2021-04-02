@@ -8,4 +8,7 @@ export type RestaurantType = {
   id: string
   managers: string[]
   menu: MenuItem[]
+  name: string
+  description: string
+  rating: number
 }
