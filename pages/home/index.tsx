@@ -35,7 +35,7 @@ export default function Home() {
     return <WaiterHome />
   }
 
-  if (user.role >= UserRole.manager) {
+  if (user.role === UserRole.manager || user.role === UserRole.owner) {
     return <AdminHome />
   }
 
