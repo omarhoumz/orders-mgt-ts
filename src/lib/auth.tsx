@@ -6,13 +6,13 @@ import { createUser, getUserRole } from './db'
 
 // TODO: maybe move to types
 export enum UserRole {
-  user,
-  waiter,
-  manager,
-  owner,
+  user = 'user',
+  waiter = 'waiter',
+  manager = 'manager',
+  owner = 'owner',
 }
 
-export type User = {
+export type UserType = {
   uid: string
   email: string | null
   name: string | null
@@ -23,7 +23,7 @@ export type User = {
 } | null
 
 type AuthContextType = {
-  user: User
+  user: UserType
   loading: boolean
   signinWithEmail: (email: string, password: string) => Promise<void> | void
   signinWithGoogle: (redirect?: string) => Promise<void> | void
@@ -44,11 +44,19 @@ export function AuthProvider({ children }) {
 }
 
 export const useAuth = () => {
-  return React.useContext(AuthContext)
+  const context = React.useContext(AuthContext)
+
+  if (!context) {
+    throw new Error(
+      'Before using the `useAuth` hook, wrap your component in `AuthProvider`',
+    )
+  }
+
+  return context
 }
 
 function useProvideAuth() {
-  const [user, setUser] = React.useState<User>(null)
+  const [user, setUser] = React.useState<UserType>(null)
   const [loading, setLoading] = React.useState(true)
 
   async function handleUser(
@@ -126,7 +134,7 @@ function useProvideAuth() {
 const formatUser = async (
   user: firebase.User,
   isNewUser: boolean,
-): Promise<User> => {
+): Promise<UserType> => {
   const token = await user.getIdToken()
   const role = isNewUser ? UserRole.user : await getUserRole(user)
 

@@ -1,5 +1,11 @@
 import Head from 'next/head'
+import Link from 'next/link'
 import * as React from 'react'
+
+const links = [
+  { label: 'Home', href: '/home' },
+  { label: 'My Restaurants', href: '/home' },
+]
 
 export default function BaseHome({
   children,
@@ -14,6 +20,17 @@ export default function BaseHome({
         <title>{pageTitle}</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
+
+      <nav className='mb-4 text-sm text-gray-700'>
+        {links.map(({ label, href }, index) => (
+          <React.Fragment key={index}>
+            {index === 0 ? null : ' · '}
+            <Link href={href}>
+              <a className='capitalize'>{label}</a>
+            </Link>
+          </React.Fragment>
+        ))}
+      </nav>
 
       {children}
     </div>
