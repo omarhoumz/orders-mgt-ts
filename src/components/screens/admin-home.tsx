@@ -7,6 +7,7 @@ import { MenuItem, RestaurantType } from 'src/types'
 
 import BaseHome from '../base-home'
 import LoadingSpinner from '../loading-spinner'
+import SignOutBtn from '../sign-out-btn'
 
 type ResponseType = {
   restaurants: RestaurantType[]
@@ -39,9 +40,9 @@ export default function AdminHome() {
   if (data.restaurants.length <= 0) {
     return (
       <BaseHome pageTitle='Admin Home'>
-        <header className='pb-2 flex justify-between'>
+        <header className='pb-2 flex justify-between items-center'>
           <h1 className='text-xl font-light'>My Restaurant</h1>
-          <button onClick={() => signout('/')}>Sign Out ({user.name})</button>
+          <SignOutBtn signout={signout} user={user} />
         </header>
 
         <main className='flex flex-col gap-4 mt-6'>Handle no restaurants</main>
@@ -51,9 +52,9 @@ export default function AdminHome() {
 
   return (
     <BaseHome pageTitle='Admin Home'>
-      <header className='pb-2 flex justify-between'>
+      <header className='pb-2 flex justify-between items-center'>
         <h1 className='text-xl font-light'>My Restaurant</h1>
-        <button onClick={() => signout('/')}>Sign Out ({user.name})</button>
+        <SignOutBtn signout={signout} user={user} />
       </header>
 
       <main className='flex flex-col gap-y-2 mt-6'>

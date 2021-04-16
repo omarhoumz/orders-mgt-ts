@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import BaseHome from '../base-home'
 import LoadingSpinner from '../loading-spinner'
 import Restaurant from '../restaurant'
+import SignOutBtn from '../sign-out-btn'
 
 type ResponseType = {
   restaurants: RestaurantType[]
@@ -28,9 +29,9 @@ export default function DefaultHome() {
 
   return (
     <BaseHome pageTitle='Home'>
-      <header className='flex justify-between items-baseline'>
+      <header className='flex justify-between items-center'>
         <h2 className='text-xl font-light'>Home</h2>
-        <button onClick={() => signout('/')}>Sign Out ({user.name})</button>
+        <SignOutBtn signout={signout} user={user} />
       </header>
       <main>
         <section className='flex justify-center py-12'>

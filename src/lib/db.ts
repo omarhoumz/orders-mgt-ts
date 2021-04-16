@@ -3,12 +3,12 @@ import { MenuItem, RestaurantType } from 'src/types'
 import { UserRole } from './auth'
 import firebase from './firebase'
 
-import type { User } from './auth'
+import type { UserType } from './auth'
 
 const db = firebase.firestore()
 const storage = firebase.storage()
 
-export function createUser(user: Omit<User, 'token'>) {
+export function createUser(user: Omit<UserType, 'token'>) {
   return db.collection('users').doc(user.uid).set(user)
 }
 
