@@ -1,5 +1,6 @@
 import { useRouter } from 'next/router'
 import useSWR from 'swr'
+import Link from 'next/link'
 
 import BaseHome from '@/components/base-home'
 import LoadingSpinner from '@/components/loading-spinner'
@@ -18,7 +19,13 @@ export default function ManageRestaurant() {
 
   const isLoading = !rid || loading || !data
 
-  if (isLoading) return <LoadingSpinner />
+  if (isLoading) {
+    return (
+      <BaseHome pageTitle='Loading'>
+        <LoadingSpinner />
+      </BaseHome>
+    )
+  }
 
   if (error) {
     return <div>There was an error while fetching restaurant data</div>
@@ -26,6 +33,16 @@ export default function ManageRestaurant() {
 
   return (
     <BaseHome pageTitle='Home'>
+      <Link
+        href={{
+          pathname: '/add/menu-item',
+          query: { rid },
+        }}
+      >
+        <a className='inline-block bg-blue-600 self-start px-3 py-1.5 mb-4 rounded text-blue-50 hover:bg-blue-500'>
+          Add a menu item
+        </a>
+      </Link>
       <div className='flex flex-col'>
         {data.menuItems.map((item, index) => {
           const price = parseFloat(item.price.toString()).toLocaleString(

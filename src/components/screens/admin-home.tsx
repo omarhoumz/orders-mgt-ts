@@ -28,7 +28,13 @@ export default function AdminHome() {
     return <div>Failed to load</div>
   }
 
-  if (!data) return <LoadingSpinner />
+  if (!data) {
+    return (
+      <BaseHome pageTitle='Loading'>
+        <LoadingSpinner />
+      </BaseHome>
+    )
+  }
 
   if (data.restaurants.length <= 0) {
     return (
@@ -50,20 +56,14 @@ export default function AdminHome() {
         <button onClick={() => signout('/')}>Sign Out ({user.name})</button>
       </header>
 
-      <main className='flex flex-col gap-4 mt-6'>
+      <main className='flex flex-col gap-y-2 mt-6'>
         {data.restaurants.map((item) => (
-          <a href={`/home/restaurant/${item.id}`}>{item.name}</a>
+          <Link href={`/home/restaurant/${item.id}`} key={item.id}>
+            <a className='text-gray-900 bg-gray-100 px-2 py-3 capitalize rounded-sm shadow transition-shadow hover:shadow-md'>
+              {item.name}
+            </a>
+          </Link>
         ))}
-        {/* <Link
-          href={{
-            pathname: '/add/menu-item',
-            query: { rid: firstRestaurant },
-          }}
-        >
-          <a className='bg-blue-600 self-start px-3 py-2 rounded text-blue-50 hover:bg-blue-500'>
-            Add a menu item
-          </a>
-        </Link> */}
       </main>
     </BaseHome>
   )

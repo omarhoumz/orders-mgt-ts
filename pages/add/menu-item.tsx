@@ -1,9 +1,10 @@
-import BaseHome from '@/components/base-home'
-import LoadingSpinner from '@/components/loading-spinner'
-import { addMenuItem } from '@/lib/db'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import * as React from 'react'
+
+import BaseHome from '@/components/base-home'
+import LoadingSpinner from '@/components/loading-spinner'
+import { addMenuItem } from '@/lib/db'
 
 import { MenuItem } from 'src/types'
 
@@ -55,6 +56,7 @@ export default function AddMenuItem() {
     price: 0,
   })
   const Router = useRouter()
+  const rid = Router.query.rid as string
 
   async function handleSubmit(
     event: React.FormEvent<HTMLFormElement>,
@@ -62,7 +64,6 @@ export default function AddMenuItem() {
     event.preventDefault()
     setStatus(STATES.LOADING)
 
-    const rid = Router.query.rid as string
     await addMenuItem({ rid, ...formData })
 
     setStatus(STATES.SUCCESS)
@@ -76,7 +77,7 @@ export default function AddMenuItem() {
   }
 
   if (status === STATES.SUCCESS) {
-    Router.push('/home')
+    Router.push(`/home/restaurant/${rid}`)
     return <div>Redirecting ...</div>
   }
 
@@ -127,7 +128,7 @@ export default function AddMenuItem() {
             Submit
           </button>
 
-          <Link href='/'>
+          <Link href={`/home/restaurant/${rid}`}>
             <a>Back</a>
           </Link>
         </div>

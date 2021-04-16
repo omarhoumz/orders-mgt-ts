@@ -11,7 +11,7 @@ export default async function handler(
 ) {
   const { uid } = await auth.verifyIdToken(req.headers.token as string)
 
-  const restos = await getMenuItems({ rid: 'xnzqLBJCHX1Nj76IDMX8' })
+  const restos = await getManagerRestaurants(uid)
 
   res.status(200).json(restos)
 }
