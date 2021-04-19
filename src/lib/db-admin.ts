@@ -3,7 +3,7 @@ import admin from './firebase-admin'
 
 const db = admin.firestore()
 
-export async function getManagerRestaurant(rid, uid) {
+export async function getRestaurant(rid) {
   const snapshot = await db.collection('restaurants').doc(rid).get()
 
   let restaurant = null
@@ -14,35 +14,27 @@ export async function getManagerRestaurant(rid, uid) {
   return { restaurant }
 }
 
-export async function getManagerRestaurants(uid: string) {
-  const snapshot = await db
+export async function getMyRestaurants(uid: string) {
+  const ownerSnapshot = await db
+    .collection('restaurants')
+    .where('owners', 'array-contains', uid)
+    .get()
+
+  const managerSnapshot = await db
     .collection('restaurants')
     .where('managers', 'array-contains', uid)
     .get()
 
-  const restaurants = []
+  const owner = getItemsFromSnapshot(ownerSnapshot)
+  const manager = getItemsFromSnapshot(managerSnapshot)
 
-  if (!snapshot.empty) {
-    snapshot.forEach((doc) => {
-      restaurants.push({ id: doc.id, ...doc.data() })
-    })
-  }
-
-  return { restaurants }
+  return { restaurants: { owner, manager } }
 }
 
 export async function getUserRecommnededRestaurants(uid?: string) {
   const snapshot = await db.collection('restaurants').limit(10).get()
 
-  const restaurants = []
-
-  if (!snapshot.empty) {
-    snapshot.forEach((doc) => {
-      restaurants.push({ id: doc.id, ...doc.data() })
-    })
-  }
-
-  return { restaurants }
+  return { restaurants: getItemsFromSnapshot(snapshot) }
 }
 
 export async function getMenuItems({
@@ -55,13 +47,19 @@ export async function getMenuItems({
     .where('rid', '==', rid)
     .get()
 
-  const menuItems = []
+  return { menuItems: getItemsFromSnapshot(snapshot) }
+}
+
+function getItemsFromSnapshot(
+  snapshot: FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>,
+) {
+  const items = []
 
   if (!snapshot.empty) {
     snapshot.forEach((doc) => {
-      menuItems.push({ id: doc.id, ...doc.data() })
+      items.push({ id: doc.id, ...doc.data() })
     })
   }
 
-  return { menuItems }
+  return items
 }
