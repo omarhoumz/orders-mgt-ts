@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import admin from '@/lib/firebase-admin'
-import { getManagerRestaurant, getMenuItems } from '@/lib/db-admin'
+import { getRestaurant, getMenuItems } from '@/lib/db-admin'
 
 const auth = admin.auth()
 
@@ -14,7 +14,7 @@ export default async function handler(
 
   const { menuItems } = await getMenuItems({ rid })
 
-  const { restaurant } = await getManagerRestaurant(rid, uid)
+  const { restaurant } = await getRestaurant(rid)
 
   res.status(200).json({ menuItems, restaurant })
 }
